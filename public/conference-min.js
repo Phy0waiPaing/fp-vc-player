@@ -1,3 +1,5 @@
+/*global Flashphoner */
+/*global joinBtn */
 var SESSION_STATUS = Flashphoner.constants.SESSION_STATUS;
 var STREAM_STATUS = Flashphoner.constants.STREAM_STATUS;
 var ROOM_EVENT = Flashphoner.roomApi.events;
@@ -6,6 +8,7 @@ var connection;
 var url = "wss://192.168.0.4:8443";
 const id = `f${(~~(Math.random()*1e8)).toString(16)}`;
  
+// eslint-disable-next-line no-unused-vars
 function init_page() {
     Flashphoner.init({});
     joinBtn.onclick = connect;
