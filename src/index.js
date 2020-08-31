@@ -4,10 +4,11 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+import Player from './Player';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <Player />
   </React.StrictMode>,
   document.getElementById('root')
 );
