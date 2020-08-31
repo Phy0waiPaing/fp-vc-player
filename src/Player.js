@@ -5,7 +5,6 @@ const Player = () => {
   const SESSION_STATUS = Flashphoner.constants.SESSION_STATUS;
   var STREAM_STATUS = Flashphoner.constants.STREAM_STATUS;
   var ROOM_EVENT = Flashphoner.roomApi.events;
-  var participants = 2;
   var url = "wss://192.168.0.4:8443";
   const id = `f${(~~(Math.random() * 1e8)).toString(16)}`;
   Flashphoner.init({});
@@ -27,12 +26,13 @@ const Player = () => {
         console.log("room event state");
         var participants = room.getParticipants();
         setInviteAddress(room.name());
+        console.log(`participants length=>${participants.length}`);
         if (participants.length > 0) {
           for (var i = 0; i < participants.length; i++) {
             playParticipantsStream(participants[i]);
           }
         }
-        publishLocalMedia(room);
+        participants.length > 0 && publishLocalMedia(room);
       })
       .on(ROOM_EVENT.JOINED, function (participant) {
         console.log("room event joined");
@@ -46,12 +46,14 @@ const Player = () => {
   };
 
   const playParticipantsStream = (participant) => {
-    console.log("participant length =>", participant.getStreams());
-    if (participant.getStreams().length > 0) {
-      participant
-        .getStreams()[0]
-        .play(document.getElementById("participantDisplay"))
-        .on(STREAM_STATUS.PLAYING, function (playingStream) {});
+    const participantStreams = participant.getStreams();
+    console.log("participant streams =>", participantStreams);
+    if (participantStreams.length > 0) {
+      for (var i = 0; i < participantStreams.length; i++) {
+        participantStreams[i]
+          .play(document.getElementById(`participant${i + 1}Display`))
+          .on(STREAM_STATUS.PLAYING, function (playingStream) {});
+      }
     }
   };
 
@@ -78,7 +80,7 @@ const Player = () => {
   //publish local video
   const publishLocalMedia = (room) => {
     var constraints = {
-      audio: true,
+      audio: false,
       video: true,
     };
     var display = document.getElementById("local");
@@ -92,9 +94,14 @@ const Player = () => {
   return (
     <div>
       <div
-        id="participantDisplay"
+        id="participant1Display"
         style={{ width: 320, height: 240, border: 20, borderColor: "#000" }}
       ></div>
+      <div
+        id="participant2Display"
+        style={{ width: 320, height: 240, border: 20, borderColor: "#000" }}
+      ></div>
+      <br />
       <br />
       <div
         id="local"
