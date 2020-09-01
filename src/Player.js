@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 
 const Player = () => {
+  const [localShow] = useState(window.location.search != "");
   const Flashphoner = window.Flashphoner;
   const SESSION_STATUS = Flashphoner.constants.SESSION_STATUS;
   var STREAM_STATUS = Flashphoner.constants.STREAM_STATUS;
@@ -93,21 +94,29 @@ const Player = () => {
   };
   return (
     <div>
+      {localShow && (
+        <>
+          <div
+            id="local"
+            style={{ width: 320, height: 240, border: 20, borderColor: "#000" }}
+          ></div>
+          <br />
+        </>
+      )}
       <div
         id="participant1Display"
         style={{ width: 320, height: 240, border: 20, borderColor: "#000" }}
       ></div>
-      <div
-        id="participant2Display"
-        style={{ width: 320, height: 240, border: 20, borderColor: "#000" }}
-      ></div>
       <br />
-      <br />
-      <div
-        id="local"
-        style={{ width: 320, height: 240, border: 20, borderColor: "#000" }}
-      ></div>
-      <br />
+      {!localShow && (
+        <>
+          <div
+            id="participant2Display"
+            style={{ width: 320, height: 240, border: 20, borderColor: "#000" }}
+          ></div>
+          <br />
+        </>
+      )}
       <label>Login</label>
       <input
         type="text"
